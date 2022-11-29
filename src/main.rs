@@ -36,12 +36,18 @@ fn main() {
             );
         }
 
-        // Obtain a guess from the user, ensure it is within the alphabet.
+        // Obtain a guess from the user, ensure it is valid.
         let mut guess: char = char::default();
         while !LAT_ALPHABET.contains(&guess) {
             let input = get_input_with_prompt("Enter your guess: ").to_lowercase();
 
             println!();
+
+            if incorrect_guesses.iter().any(|x| x == &input) {
+                println!("You have already guessed {input}.\n");
+
+                continue;
+            }
 
             if input.len() == 1 {
                 guess = input.chars().nth(0).unwrap();
