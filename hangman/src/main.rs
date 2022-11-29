@@ -14,12 +14,9 @@ fn main() {
         .chars()
         .collect();
 
-    let mut incorrect_guesses: Vec<char> = Vec::new();
+    let mut incorrect_guesses: Vec<String> = Vec::new();
     let mut user_progress: Vec<char> = vec!['_'; word.len()];
     let mut guesses_left: i8 = 12;
-
-    // FOR DEBUGGING PURPOSES ONLY
-    println!("{}", word.iter().collect::<String>());
 
     // Loop until the user guesses the word or runs out of guesses.
     while &user_progress.iter().collect::<String>() != &word.iter().collect::<String>()
@@ -32,6 +29,12 @@ fn main() {
         );
 
         // Print out each incorrect letter guessed, separated by commas.
+        if incorrect_guesses.len() > 0 {
+            println!(
+                "Incorrect letters guessed so far: {}.\n",
+                &incorrect_guesses.join(", ")
+            );
+        }
 
         // Obtain a guess from the user, ensure it is within the alphabet.
         let mut guess: char = char::default();
@@ -65,10 +68,22 @@ fn main() {
         } else {
             println!("Incorrect!\n");
 
-            incorrect_guesses.push(guess);
+            incorrect_guesses.push(String::from(guess));
 
             guesses_left -= 1;
         }
+    }
+
+    if &user_progress.iter().collect::<String>() == &word.iter().collect::<String>() {
+        println!(
+            "Congratulations on guessing my word, {}!\n",
+            &word.iter().collect::<String>()
+        );
+    } else {
+        println!(
+            "L. You died. The word was {} :)\n",
+            &word.iter().collect::<String>()
+        );
     }
 }
 
