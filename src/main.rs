@@ -7,20 +7,20 @@ mod words;
 alphabet!(LAT_ALPHABET = "abcdefghijklmnopqrstuvwxyz");
 
 fn main() {
-    let word: Vec<char> = words::get_words()
-        .choose(&mut rand::thread_rng())
-        .unwrap()
-        .chars()
-        .collect();
-
-    let mut incorrect_guesses: Vec<String> = Vec::new();
-    let mut user_progress: Vec<char> = vec!['_'; word.len()];
-    let mut guesses_left: i8 = 12;
-
     let mut user_playing = true;
 
     // Loop until the users wishes to stop playing.
     while user_playing {
+        let word: Vec<char> = words::get_words()
+            .choose(&mut rand::thread_rng())
+            .unwrap()
+            .chars()
+            .collect();
+
+        let mut incorrect_guesses: Vec<String> = Vec::new();
+        let mut user_progress: Vec<char> = vec!['_'; word.len()];
+        let mut guesses_left: i8 = 12;
+
         // Loop until the user guesses the word or runs out of guesses.
         while &user_progress.iter().collect::<String>() != &word.iter().collect::<String>()
             && guesses_left > 0
