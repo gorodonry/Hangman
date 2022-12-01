@@ -18,6 +18,7 @@ fn main() {
             .collect();
 
         let mut incorrect_guesses: Vec<String> = Vec::new();
+        let mut correct_guesses: Vec<String> = Vec::new();
         let mut user_progress: Vec<char> = vec!['_'; word.len()];
         let mut guesses_left: i8 = 12;
 
@@ -46,12 +47,16 @@ fn main() {
 
                 println!();
 
-                if incorrect_guesses.iter().any(|x| x == &input) {
+                // Check that the user hasn't already guessed the input.
+                if incorrect_guesses.iter().any(|x| x == &input)
+                    || correct_guesses.iter().any(|x| x == &input)
+                {
                     println!("You have already guessed {input}.\n");
 
                     continue;
                 }
 
+                // Process the guess.
                 if input.len() == 1 {
                     guess = input.chars().nth(0).unwrap();
                 } else {
@@ -74,6 +79,8 @@ fn main() {
                         user_progress[letter_index] = guess;
                     }
                 }
+
+                correct_guesses.push(String::from(guess));
             } else {
                 println!("Incorrect!\n");
 
