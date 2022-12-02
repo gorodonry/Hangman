@@ -28,6 +28,7 @@ pub fn get_input_with_prompt(prompt: &str) -> String {
 /// Asks the user a question with a binary answer.
 /// Returns the input provided by the user as a Boolean,
 /// where `"yes"` becomes `true`, and vice versa.
+/// Uppercase inputs and inputs with trailling whitespace are dealt with.
 ///
 /// # Arguments
 ///
@@ -42,14 +43,16 @@ pub fn get_input_with_prompt(prompt: &str) -> String {
 ///
 /// Output:<br>
 /// `Do you like rust? [Y/n]`<br><br>
-/// Default is yes (selected if the user hits \[return\]), options are \[y\] and \[n\].
+/// Default is yes (selected if the user hits \[return\]), input options are \[y\] and \[n\].
 pub fn ask_yes_no_question(prompt: &str, default: bool) -> bool {
     let mut input: String = String::new();
 
     while !["y", "n"].iter().any(|x| x == &input) {
         // If the default answer is yes.
         if default {
-            input = get_input_with_prompt(&format!("{} [Y/n] ", &prompt)).to_lowercase();
+            input = get_input_with_prompt(&format!("{} [Y/n] ", &prompt))
+                .trim()
+                .to_lowercase();
 
             input = if input == String::new() {
                 String::from("y")
@@ -57,7 +60,9 @@ pub fn ask_yes_no_question(prompt: &str, default: bool) -> bool {
                 input
             };
         } else {
-            input = get_input_with_prompt(&format!("{} [y/N] ", &prompt)).to_lowercase();
+            input = get_input_with_prompt(&format!("{} [y/N] ", &prompt))
+                .trim()
+                .to_lowercase();
 
             input = if input == String::new() {
                 String::from("n")
