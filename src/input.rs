@@ -49,7 +49,7 @@ pub fn ask_yes_no_question(prompt: &str, default: bool) -> bool {
     while !["y", "n"].iter().any(|x| x == &input) {
         // If the default answer is yes.
         if default {
-            input = get_input_with_prompt(&format!("{} [Y/n]", &prompt)).to_lowercase();
+            input = get_input_with_prompt(&format!("{} [Y/n] ", &prompt)).to_lowercase();
 
             input = if input == String::new() {
                 String::from("y")
@@ -57,7 +57,7 @@ pub fn ask_yes_no_question(prompt: &str, default: bool) -> bool {
                 input
             };
         } else {
-            input = get_input_with_prompt(&format!("{} [y/N]", &prompt)).to_lowercase();
+            input = get_input_with_prompt(&format!("{} [y/N] ", &prompt)).to_lowercase();
 
             input = if input == String::new() {
                 String::from("n")

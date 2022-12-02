@@ -35,14 +35,15 @@ fn main() {
             // Print out each incorrect letter guessed, separated by commas.
             if incorrect_guesses.len() > 0 {
                 println!(
-                    "Incorrect letters guessed so far: {}.\n",
+                    "Incorrect guesses so far: {}.\n",
                     &incorrect_guesses.join(", ")
                 );
             }
 
             // Obtain a guess from the user, ensure it is valid.
-            let mut guess: char = char::default();
-            while !LAT_ALPHABET.contains(&guess) {
+            let mut char_guess = char::default();
+            let mut word_guess = String::new();
+            'input_loop: while !LAT_ALPHABET.contains(&char_guess) && word_guess == String::new() {
                 let input = input::get_input_with_prompt("Enter your guess: ").to_lowercase();
 
                 println!();
@@ -56,35 +57,58 @@ fn main() {
                     continue;
                 }
 
-                // Process the guess.
+                // Check the guess for validity.
                 if input.len() == 1 {
-                    guess = input.chars().nth(0).unwrap();
+                    char_guess = input.chars().nth(0).unwrap();
+                } else if input.len() == word.len() {
+                    // Check that each letter of the input is in the alphabet.
+                    for letter in (&input).chars() {
+                        if !LAT_ALPHABET.iter().any(|x| x == &letter) {
+                            println!("Not all of those are letters...\n");
+
+                            continue 'input_loop;
+                        }
+                    }
+
+                    word_guess = input;
+
+                    continue;
                 } else {
-                    println!("Please enter a single character.\n");
+                    println!("Invalid number of characters!\n");
 
                     continue;
                 }
 
-                if !LAT_ALPHABET.iter().any(|x| x == &guess) {
+                if !LAT_ALPHABET.iter().any(|x| x == &char_guess) {
                     println!("That's not a letter...\n");
                 }
             }
 
-            // If the user guessed a letter correctly, update their progress
-            if word.contains(&guess) {
+            // Process the guess.
+            if word_guess != String::new() {
+                // If the user tried to guess the entire word at once, check their guess.
+                if &word.iter().collect::<String>() == &word_guess {
+                    user_progress = word.clone();
+                } else {
+                    println!("No, that's not it!\n");
+
+                    incorrect_guesses.push(word_guess);
+                }
+            } else if word.contains(&char_guess) {
+                // If they guessed a single letter, check the letter.
                 println!("Correct!\n");
 
                 for letter_index in 0..word.len() {
-                    if word[letter_index] == guess {
-                        user_progress[letter_index] = guess;
+                    if word[letter_index] == char_guess {
+                        user_progress[letter_index] = char_guess;
                     }
                 }
 
-                correct_guesses.push(String::from(guess));
+                correct_guesses.push(String::from(char_guess));
             } else {
                 println!("Incorrect!\n");
 
-                incorrect_guesses.push(String::from(guess));
+                incorrect_guesses.push(String::from(char_guess));
 
                 guesses_left -= 1;
             }
