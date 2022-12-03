@@ -1,6 +1,7 @@
 use alphabet_macro::alphabet;
 use rand::seq::SliceRandom;
 
+mod gallows;
 mod input;
 mod words;
 
@@ -26,6 +27,8 @@ fn main() {
         while &user_progress.iter().collect::<String>() != &word.iter().collect::<String>()
             && guesses_left > 0
         {
+            println!("{}\n", gallows::get_gallow_ascii(guesses_left as usize));
+
             println!(
                 "With {} guesses remaining you have successfully guessed {}.\n",
                 guesses_left,
@@ -121,7 +124,8 @@ fn main() {
             );
         } else {
             println!(
-                "L. You died. The word was {} :)\n",
+                "{}\n\nL. You died. The word was {} :)\n",
+                gallows::get_gallow_ascii(0),
                 &word.iter().collect::<String>()
             );
         }
