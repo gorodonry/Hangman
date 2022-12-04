@@ -1,18 +1,23 @@
 use alphabet_macro::alphabet;
 use rand::seq::SliceRandom;
+use std::fs;
 
 mod gallows;
 mod input;
-mod words;
 
 alphabet!(LAT_ALPHABET = "abcdefghijklmnopqrstuvwxyz");
 
+const WORD_PATH: &str = "src/words.json";
+
 fn main() {
+    let json = fs::read_to_string(WORD_PATH).unwrap();
+    let words: Vec<&str> = serde_json::from_str(&json).unwrap();
+
     let mut user_playing = true;
 
     // Loop until the users wishes to stop playing.
     while user_playing {
-        let word: Vec<char> = words::get_words()
+        let word: Vec<char> = words
             .choose(&mut rand::thread_rng())
             .unwrap()
             .chars()
