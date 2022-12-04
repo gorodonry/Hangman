@@ -7,10 +7,10 @@ mod input;
 
 alphabet!(LAT_ALPHABET = "abcdefghijklmnopqrstuvwxyz");
 
-const WORD_PATH: &str = "src/words.json";
+const WORDS_PATH: &str = "src/words.json";
 
 fn main() {
-    let json = fs::read_to_string(WORD_PATH).unwrap();
+    let json = fs::read_to_string(WORDS_PATH).unwrap();
     let words: Vec<&str> = serde_json::from_str(&json).unwrap();
 
     let mut user_playing = true;
