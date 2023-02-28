@@ -35,8 +35,9 @@ fn main() {
             println!("{}\n", gallows::get_gallow_ascii(guesses_left as usize));
 
             println!(
-                "With {} guesses remaining you have successfully guessed {}.\n",
+                "With {} guess{} remaining you have successfully guessed {}.\n",
                 guesses_left,
+                if guesses_left as i32 == 1 {String::from("")} else {String::from("es")},
                 &user_progress.iter().collect::<String>()
             );
 
